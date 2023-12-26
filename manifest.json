@@ -10,7 +10,7 @@
 
   "content_scripts": [
     {
-      "matches": ["https://www.sac-cas.ch/en/huts-and-tours/sac-route-portal/*"],
+      "matches": ["https://www.sac-cas.ch/en/huts-and-tours/sac-route-portal/*/ski_tour/*"],
       "js": ["sac-cas-gpstrack.js"]
     }
   ]
