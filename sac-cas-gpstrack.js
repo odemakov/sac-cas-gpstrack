@@ -29,7 +29,6 @@ function addButton(route) {
         svg.setAttribute("aria-hidden", true);
         svg.className = "m-map__control-icon svg";
 
-        const path = window.location.pathname.split("/");
         const button = document.createElement("button");
         button.className = "m-map__control sac-cas-gpstrack-button";
         button.setAttribute('type', 'button');
