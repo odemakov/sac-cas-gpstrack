@@ -1,8 +1,16 @@
 
-window.addEventListener('load',function() {
+window.addEventListener('load', function() {
     clean();
-    addButton();
+    // only for logged in users and for route page
+    const route = new Route(window.location.pathname);
+    if(userLoggedIn() && route.id) {
+        addButton(route);
+    }
 });
+
+function userLoggedIn() {
+    return document.getElementsByClassName("m-header__logout-button").length > 0;
+}
 
 function clean() {
     // clean button
@@ -13,23 +21,25 @@ function clean() {
     while (links.length > 0) links[0].remove();
 }
 
-function addButton() {
-    const el = document.getElementsByClassName("m-map__control-group m-map__control-group--top-right")[0];
+function addButton(route) {
+    let el = document.getElementsByClassName("m-map__control-group m-map__control-group--top-right");
+    if(el.length) {
+        el = el[0];
+        const svg = document.createElement("svg");
+        svg.setAttribute("aria-hidden", true);
+        svg.className = "m-map__control-icon svg";
 
-    const svg = document.createElement("svg");
-    svg.setAttribute("aria-hidden", true);
-    svg.className = "m-map__control-icon svg";
+        const path = window.location.pathname.split("/");
+        const button = document.createElement("button");
+        button.className = "m-map__control sac-cas-gpstrack-button";
+        button.setAttribute('type', 'button');
+        button.textContent = 'GPS';
+        button.addEventListener("click", download);
+        button.setAttribute("style", "background-color: blanchedalmond;")
+        button.setAttribute("data-route-id", route.id);
 
-    const path = window.location.pathname.split("/");
-    const button = document.createElement("button");
-    button.className = "m-map__control sac-cas-gpstrack-button";
-    button.setAttribute('type', 'button');
-    button.textContent = 'GPS';
-    button.addEventListener("click", download);
-    button.setAttribute("style", "background-color: blanchedalmond;")
-    button.setAttribute("data-route-id", path[path.length-1]);
-
-    el.appendChild(button);
+        el.appendChild(button);
+    }
 }
 
 function download(event) {
@@ -62,6 +72,33 @@ function slugify(str) {
         .replace(/[^\w\s-]/g, '')
         .replace(/[\s_-]+/g, '-')
         .replace(/^-+|-+$/g, '');
+}
+
+const Route = class {
+    /**
+     * /en/huts-and-tours/sac-route-portal/5028/ski_tour/4205
+     * /en/huts-and-tours/sac-route-portal/60/mountain_hiking/1257
+     * /en/huts-and-tours/sac-route-portal/rothorn-laemmeren-11049/ski-touring/vom-gemmipass-oder-von-der-laemmerenhuette-ueber-die-n-seite-7235
+     * /de/huetten-und-touren/sac-tourenportal/berghaus-maenndlenen-2147000162/berg-und-alpinwandern/von-first-1469/
+     * /it/capanne-e-escursioni/portale-escursionistico-del-cas/berghaus-maenndlenen-2147000162/escursionismo-alpino/von-first-1469/
+     */
+    constructor(path) {
+        this.id = false;
+        this.destination = false;
+        this.path = path.replace(/^\/+|\/+$/g, '').split("/");
+        if (this.path.length == 6) {
+            this.id = this.parseNum(this.path[5]);
+            this.destination = this.parseNum(this.path[3]);
+        }
+    }
+    parseNum(str) {
+        if(str.includes("-")) {
+            const c = str.split("-");
+            return parseInt(c[c.length-1]);
+        } else {
+            return parseInt(str);
+        }
+    }
 }
 
 const GPXString = class {

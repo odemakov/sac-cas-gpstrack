@@ -2,12 +2,17 @@
   "description": "",
   "manifest_version": 2,
   "name": "SAC CAS GPS track",
-  "version": "1.0",
+  "version": "1.0.1",
   "homepage_url": "https://github.com/odemakov/sac-cas-gpstrack",
   "icons": {},
   "content_scripts": [
     {
-      "matches": ["https://www.sac-cas.ch/en/huts-and-tours/sac-route-portal/*/ski_tour/*"],
+      "matches": [
+        "https://www.sac-cas.ch/en/huts-and-tours/sac-route-portal/*",
+        "https://www.sac-cas.ch/de/huetten-und-touren/sac-tourenportal/*",
+        "https://www.sac-cas.ch/fr/cabanes-et-courses/portail-des-courses-du-cas/*",
+        "https://www.sac-cas.ch/it/capanne-e-escursioni/portale-escursionistico-del-cas/*"
+      ],
       "js": ["sac-cas-gpstrack.js"]
     }
   ]
