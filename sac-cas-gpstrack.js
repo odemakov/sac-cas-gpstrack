@@ -49,9 +49,11 @@ function download(event) {
         .then(data => {
             let gpx = new GPXString(data.title, data.type, document.location);
             data.segments.map((segment) => {
-                gpx.addSegment(segment.geom.coordinates.map(
-                    (c) => Swisstopo.toTrkpt(c[1], c[0])
-                ));
+                if(segment.geom != null && segment.geom.coordinates != null) {
+                    gpx.addSegment(segment.geom.coordinates.map(
+                        (c) => Swisstopo.toTrkpt(c[1], c[0])
+                    ));
+                }
             });
             const link = document.createElement('a');
             link.download = `SAC-CAS-${routeId}-${slugify(data.title)}.gpx`;
@@ -62,7 +64,7 @@ function download(event) {
             link.click();
             link.remove();
         })
-        .catch(error => console.error('Error fetching data:', error));
+        .catch(error => console.error('Error fetching or processing data:', error));
 }
 
 function slugify(str) {

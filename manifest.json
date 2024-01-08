@@ -2,7 +2,7 @@
   "description": "",
   "manifest_version": 2,
   "name": "SAC CAS GPS track",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "homepage_url": "https://github.com/odemakov/sac-cas-gpstrack",
   "icons": {},
   "content_scripts": [
