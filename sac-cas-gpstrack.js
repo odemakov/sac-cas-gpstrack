@@ -95,7 +95,7 @@ const Route = class {
     parseNum(str) {
         if(str.includes("-")) {
             const components = str.split("-");
-            return parseInt(c[c.length-1], 10);
+            return parseInt(components[components.length-1], 10);
         } else {
             return parseInt(str, 10);
         }

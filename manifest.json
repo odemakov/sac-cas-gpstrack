@@ -1,10 +1,21 @@
 {
-  "description": "",
+  "description": "Extract and download GPS tracks from SAC-CAS route portal",
   "manifest_version": 3,
   "name": "SAC CAS GPS track",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "homepage_url": "https://github.com/odemakov/sac-cas-gpstrack",
-  "icons": {},
+  "icons": {
+    "48": "icons/icons8-track-order-48.png",
+    "128": "icons/icons8-track-order-128.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{f40a0909-f242-4db3-90b3-aa45eaa86762}",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
   "content_scripts": [
     {
       "matches": [
