@@ -3,28 +3,28 @@ window.addEventListener('load', function() {
     clean();
     // only for logged in users and for route page
     const route = new Route(window.location.pathname);
-    if(userLoggedIn() && route.id) {
+    if(isUserLoggedIn() && route.id) {
         addButton(route);
     }
 });
 
-function userLoggedIn() {
+function isUserLoggedIn() {
     return document.getElementsByClassName("m-header__logout-button").length > 0;
 }
 
 function clean() {
     // clean button
     const buttons = document.getElementsByClassName("sac-cas-gpstrack-button");
-    while (buttons.length > 0) buttons[0].remove();
+    Array.from(buttons).forEach(button => button.remove());
     // clean link
     const links = document.getElementsByClassName("sac-cas-gpstrack-link");
-    while (links.length > 0) links[0].remove();
+    Array.from(links).forEach(link => link.remove());
 }
 
 function addButton(route) {
-    let el = document.getElementsByClassName("m-map__control-group m-map__control-group--top-right");
-    if(el.length) {
-        el = el[0];
+    let controlGroupElement = document.getElementsByClassName("m-map__control-group m-map__control-group--top-right");
+    if(controlGroupElement.length) {
+        controlGroupElement = controlGroupElement[0];
         const svg = document.createElement("svg");
         svg.setAttribute("aria-hidden", true);
         svg.className = "m-map__control-icon svg";
@@ -34,10 +34,10 @@ function addButton(route) {
         button.setAttribute('type', 'button');
         button.textContent = 'GPS';
         button.addEventListener("click", download);
-        button.setAttribute("style", "background-color: blanchedalmond;")
+        button.classList.add("sac-cas-gpstrack-button-style");
         button.setAttribute("data-route-id", route.id);
 
-        el.appendChild(button);
+        controlGroupElement.appendChild(button);
     }
 }
 
@@ -94,10 +94,10 @@ const Route = class {
     }
     parseNum(str) {
         if(str.includes("-")) {
-            const c = str.split("-");
-            return parseInt(c[c.length-1]);
+            const components = str.split("-");
+            return parseInt(c[c.length-1], 10);
         } else {
-            return parseInt(str);
+            return parseInt(str, 10);
         }
     }
 }
@@ -113,7 +113,7 @@ const GPXString = class {
     }
     addSegment(points) {
         this.gpx += '<trkseg>';
-        points.forEach((point) => {
+        points.map((point) => {
             this.gpx += `<trkpt lat="${point[1]}" lon="${point[0]}"></trkpt>`;
         });
         this.gpx += '</trkseg>';
